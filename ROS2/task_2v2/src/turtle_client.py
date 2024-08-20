@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from serverclient.srv import TurtleCommand
+from task_2v2.srv import TurtleCommand
 
 class TurtleClient(Node):
 
@@ -24,8 +24,9 @@ class TurtleClient(Node):
         self.request.vx = vx
         self.request.vy = vy
 
-        self.future = self.client.call_async(self.req)
+        self.future = self.client.call_async(self.request)
         rclpy.spin_until_future_complete(self, self.future)
+        
         if self.future.result() is not None:
             return self.future.result()
         else:
@@ -42,4 +43,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
