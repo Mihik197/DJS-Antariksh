@@ -43,7 +43,6 @@ class TurtleServer(Node):
         self.vy = request.vy if request.vy != 0.0 else self.default_vy  # turtlesim doesn't really use 'y' tbh
 
         spawn_future = self.spawn_client.call_async(self.spawn_request)
-        spawn_future.add_done_callback(self.publish_velocity_callback)
         self.get_logger().info(f'Spawned turtle at ({request.x}, {request.y}).')
 
         if spawn_future.result() is not None:
@@ -52,16 +51,6 @@ class TurtleServer(Node):
         else:
             response.success = False
             return response
-
-    def publish_velocity_callback(self, future):
-        try:
-            response = future.result()
-            if response:
-                self.get_logger().info('turtle spawned successfully!!')
-            else:
-                self.get_logger().info('turtle not spawned :(')
-        except Exception as e:
-            self.get_logger().error(f'Service call failed {e}')
 
     def publish_velocity(self):
         twist = Twist()
