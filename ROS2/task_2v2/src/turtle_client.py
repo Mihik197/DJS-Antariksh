@@ -28,6 +28,7 @@ class TurtleClient(Node):
         rclpy.spin_until_future_complete(self, self.future)
         
         if self.future.result() is not None:
+            self.get_logger().info('success...')
             return self.future.result()
         else:
             self.get_logger().error('Service call failed')
